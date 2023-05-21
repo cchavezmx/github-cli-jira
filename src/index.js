@@ -3,13 +3,15 @@ import {
   outro,
   text,
   select,
-  confirm
+  confirm,
+  isCancel
 } from '@clack/prompts'
 
 import colors from 'picocolors'
 import { fetChengeFile, getStageFiles, gitCommit, gitAdd } from './git.js'
 import { trytm } from '@bdsqqq/try'
 import { COMMITS_TYPES } from './commits-types.js'
+import { exitProgram } from './utils.js'
 
 const [stageFiles, errorStageFiles] = await trytm(getStageFiles())
 const [changeFiles, errorChangeFileds] = await trytm(fetChengeFile())
@@ -40,6 +42,8 @@ const commitType = await select({
   })
 })
 
+if (isCancel(commitType)) exitProgram()
+
 let breackingChange = false
 const { emoji, release } = COMMITS_TYPES[commitType]
 
@@ -54,6 +58,8 @@ if (release) {
   })
 }
 
+if (isCancel(breackingChange)) exitProgram()
+
 const commitMesage = await text({
   message: colors.cyan('Escriba el nombre de la tarea de Jira:'),
   placeholder: 'Ej: PA-1234',
@@ -63,6 +69,8 @@ const commitMesage = await text({
     }
   }
 })
+
+if (isCancel(commitMesage)) exitProgram()
 
 const commitComment = await text({
   message: colors.cyan('Escriba un comentario sobre la tarea:'),
@@ -74,10 +82,14 @@ const commitComment = await text({
   }
 })
 
+if (isCancel(commitComment)) exitProgram()
+
 const timeCommit = await text({
   message: colors.cyan('Escriba el tiempo que le tomó realizar la tarea:'),
   placeholder: 'Ej: 1h 30m'
 })
+
+if (isCancel(timeCommit)) exitProgram()
 
 let commit = `${commitMesage} #comment ${commitComment} #time ${timeCommit} / ${emoji} ${commitType}: `
 commit = breackingChange ? `${commit} \n\n BREAKING CHANGE: ${commitMesage}` : commit
@@ -86,6 +98,8 @@ const shouldContinue = await confirm({
   initialValue: true,
   message: `¿Estás seguro de crear el commit con el mensaje ${colors.green(commit)}?`
 })
+
+if (isCancel(shouldContinue)) exitProgram()
 
 if (!shouldContinue) {
   outro('commit cancelado')
