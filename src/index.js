@@ -3,13 +3,13 @@ import {
   outro,
   text,
   select,
-  confirm,
+  confirm
 } from '@clack/prompts'
-import { COMMITS_TYPES } from './commits-types.js'
-import colors from 'picocolors'
-import { fetChengeFile, getStageFiles, gitCommit, gitAdd, gitPush } from './git.js'
-import { trytm } from "@bdsqqq/try"
 
+import colors from 'picocolors'
+import { fetChengeFile, getStageFiles, gitCommit, gitAdd } from './git.js'
+import { trytm } from '@bdsqqq/try'
+import { COMMITS_TYPES } from './commits-types.js'
 
 const [stageFiles, errorStageFiles] = await trytm(getStageFiles())
 const [changeFiles, errorChangeFileds] = await trytm(fetChengeFile())
@@ -23,7 +23,6 @@ if (errorChangeFileds ?? errorStageFiles) {
   process.exit(1)
 }
 
-
 if (stageFiles.length === 0) {
   outro('No hay archivos en el stage')
   process.exit(1)
@@ -31,13 +30,12 @@ if (stageFiles.length === 0) {
 
 console.log({ changeFiles, stageFiles })
 
-
 const commitType = await select({
   message: colors.cyan('Seleccione el tipo de commit:'),
   options: Object.entries(COMMITS_TYPES).map(([key, value]) => {
     return {
       value: key,
-      label: `${value.emoji} ${key.padEnd(8, " ")} . ${value.description}`
+      label: `${value.emoji} ${key.padEnd(8, ' ')} . ${value.description}`
     }
   })
 })
@@ -59,38 +57,35 @@ if (release) {
 const commitMesage = await text({
   message: colors.cyan('Escriba el nombre de la tarea de Jira:'),
   placeholder: 'Ej: PA-1234',
-  validate: (value) => {      
-      if (value.match(/PA-\d+/) === null) {
-        return 'El nombre de la tarea de Jira debe empezar con PA-'
-      }      
+  validate: (value) => {
+    if (value.match(/PA-\d+/) === null) {
+      return 'El nombre de la tarea de Jira debe empezar con PA-'
     }
-  })
+  }
+})
 
-  const commitComment = await text({
-    message: colors.cyan('Escriba un comentario sobre la tarea:'),
-    placeholder: 'Ej: Se agrega la funcionalidad de ...',
-    validate: (value) => {
-      if (!value) {
-        return 'El comentario es obligatorio'
-      }       
+const commitComment = await text({
+  message: colors.cyan('Escriba un comentario sobre la tarea:'),
+  placeholder: 'Ej: Se agrega la funcionalidad de ...',
+  validate: (value) => {
+    if (!value) {
+      return 'El comentario es obligatorio'
     }
-  })
+  }
+})
 
-
-  const timeCommit = await text({
-    message: colors.cyan('Escriba el tiempo que le tomó realizar la tarea:'),
-    placeholder: 'Ej: 1h 30m',
-  })
-
+const timeCommit = await text({
+  message: colors.cyan('Escriba el tiempo que le tomó realizar la tarea:'),
+  placeholder: 'Ej: 1h 30m'
+})
 
 let commit = `${commitMesage} #comment ${commitComment} #time ${timeCommit} / ${emoji} ${commitType}: `
 commit = breackingChange ? `${commit} \n\n BREAKING CHANGE: ${commitMesage}` : commit
 
 const shouldContinue = await confirm({
   initialValue: true,
-  message: `¿Estás seguro de crear el commit con el mensaje ${colors.green(commit)}?`,
+  message: `¿Estás seguro de crear el commit con el mensaje ${colors.green(commit)}?`
 })
-
 
 if (!shouldContinue) {
   outro('commit cancelado')

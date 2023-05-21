@@ -1,18 +1,29 @@
 {
-  "name": "minutosco",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "jriaco",
+  "version": "1.0.2",
+  "description": "Help you to create commits easier",
   "type": "module",
+  "bin": {
+    "jriaco": "./src/bin.js"
+  },
+  "main": "index.js",
   "scripts": {
+    "co": "jriaco",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "jriaco": "file:",
+    "standard": "^17.0.0"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
   "dependencies": {
-    "@bdsqqq/try": "^2.3.1",
-    "@clack/prompts": "^0.6.3",
-    "picocolors": "^1.0.0"
+    "@bdsqqq/try": "2.3.1",
+    "@clack/prompts": "0.6.1",
+    "picocolors": "1.0.0"
   }
 }
