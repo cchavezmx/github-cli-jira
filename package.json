@@ -1,6 +1,6 @@
 {
   "name": "jiraco",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Help you to create commits easier",
   "type": "module",
   "bin": {
@@ -11,8 +11,9 @@
     "co": "jiraco",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/cchavezmx/github-cli-jira",
   "keywords": [],
-  "author": "",
+  "author": "cchavezmx",
   "license": "ISC",
   "devDependencies": {
     "jiraco": "file:",
