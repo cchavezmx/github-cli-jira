@@ -1,21 +1,21 @@
 {
-  "name": "jriaco",
+  "name": "jiraco",
   "version": "1.0.2",
   "description": "Help you to create commits easier",
   "type": "module",
   "bin": {
-    "jriaco": "./src/bin.js"
+    "jiraco": "./src/bin.js"
   },
   "main": "index.js",
   "scripts": {
-    "co": "jriaco",
+    "co": "jiraco",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jriaco": "file:",
+    "jiraco": "file:",
     "standard": "^17.0.0"
   },
   "eslintConfig": {
